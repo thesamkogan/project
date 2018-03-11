@@ -1,0 +1,26 @@
+{
+  "name": "wikistack",
+  "version": "1.0.0",
+  "description": "using sequelize",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "start": "nodemon -e html,js,css ./app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "morgan": "^1.9.0",
+    "nodemon": "^1.17.1",
+    "nunjucks": "^3.1.2",
+    "path": "^0.12.7",
+    "pg": "^6.4.2",
+    "sequelize": "^4.35.2"
+  }
+}
