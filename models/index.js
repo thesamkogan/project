@@ -1,27 +1,58 @@
 const Sequelize = require('sequelize');
-const db = new Sequelize('postgres://localhost:5432/wikistack');
+const db = new Sequelize('postgres://localhost:5432/wikistack', {
+  logging: false
+});
 
 const Page = db.define('page', {
-    title: Sequelize.STRING,
-    urlTitle: {
-      type: Sequelize.STRING,
-      defaultValue: 'https://placeimg.com/200/200/nature',
-      allowNull: false,
-      validate: {
-        isUrl: true,
-      }
-    },
-    content: Sequelize.STRING,
-    status: Sequelize.STRING
-  });
+  title: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  urlTitle: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  content: {
+    type: Sequelize.TEXT,
+    allowNull: false
+  },
+  status: {
+    type: Sequelize.ENUM('open', 'closed')
+  }
+}, {
+  getterMethods: {
+    get() {
+      return '/wiki/' + this.urlTitle;
+    }
+  },
+  hooks: {
+    beforeValidate: (page,options) => { 
+      //console.log(page);
+      if (page.title) page.urlTitle = page.title.replace(/\s+/g, '_').replace(/\W/g, '');
+      else page.urlTitle = Math.random().toString(36).substring(2, 7);
+    }
+  }
+});
 
-  const User = db.define('user', {
-    name: Sequelize.STRING,
-    email: Sequelize.STRING
-  });
+//Page.hook("beforeValidate", (page,))
+
+const User = db.define('user', {
+  name: {
+    type: Sequelize.STRING,
+    allowNull: false
+
+  },
+  email: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      isEmail: true
+    }
+  }
+});
 
 module.exports = {
-    db,
-    Page,
-    User,
+  db,
+  Page,
+  User,
 };
