@@ -28,6 +28,7 @@ app.get('/stylesheets/style.css', function (req, res, next) {
 
 app.get('/', (req, res) => res.render('index'))
 
+// db.sync({force: true})
 db.sync()
 .then(()=> {
     console.log('All tables created!')
